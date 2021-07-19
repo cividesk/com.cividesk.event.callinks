@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<extension key="com.cividesk.event.addtocal" type="module">
+  <file>callinks</file>
+  <name>Calendar Links</name>
+  <description>Replaces the calendar links section for CiviCRM events.</description>
+  <license>AGPL-3.0</license>
+  <maintainer>
+    <author>Nicolas Ganivet</author>
+    <email>nicolas@cividesk.com</email>
+  </maintainer>
+  <releaseDate>2021-07-19</releaseDate>
+  <version>1.0</version>
+  <develStage>alpha</develStage>
+  <compatibility>
+    <ver>4.6</ver>
+  </compatibility>
+  <comments>This extension is liberal port of "CiviCRM Add to Calendar" Drupal module (https://www.drupal.org/project/civicrm_add_to_calendar) as a CiviCRM native extension. It can therefore be used with Drupal, WordPress, or any other CMS with which CiviCRM is integrated.</comments>
+  <civix>
+    <namespace>CRM/CalLinks</namespace>
+  </civix>
+</extension>
