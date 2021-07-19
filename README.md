@@ -1,4 +1,4 @@
-# Add to calendar
+# Calendar Links
 
 This extension a liberal port of the "CiviCRM Add to Calendar" Drupal 7 module (https://www.drupal.org/project/civicrm_add_to_calendar) as a CiviCRM native extension. It can therefore be used with Drupal 7, 8 or 9, WordPress, Joomla or any other CMS that integrates with CiviCRM.
 
