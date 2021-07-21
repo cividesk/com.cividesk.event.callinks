@@ -1,3 +1,5 @@
+<?php
+
 /**
  * Implements hook_civicrm_alterContent().
  */
@@ -15,6 +17,8 @@ function civicrm_addtocal_alterContent(&$content, $context, $tplName, &$object) 
       return;
   }
 
+watchdog('callinks', 'Ben was here');
+
   if (empty($object->{$key}) || strpos($content, 'iCal_links-section') === FALSE) {
     return;
   }
@@ -26,7 +30,7 @@ function civicrm_addtocal_alterContent(&$content, $context, $tplName, &$object) 
   // iCal link (native CiviCRM)
   $links['ical'] = [
     'title' => t('iCalendar'),
-    'icon' => '', // existing icon
+    'icon' => 'calendar-plus',
     'path' => url('civicrm/event/ical', [
       'query' => ['reset' => 1, 'id' => $event_id],
     ]),
@@ -37,7 +41,7 @@ function civicrm_addtocal_alterContent(&$content, $context, $tplName, &$object) 
   if ($path = civicrm_add_to_calendar_build_gcalendar_url($event_id)) {
     $links['gcalendar'] = [
       'title' => t('Google Calendar'),
-      'icon' =>
+      'icon' => 'google-plus-square',
       'path' => $path,
     ];
   }
@@ -45,11 +49,14 @@ function civicrm_addtocal_alterContent(&$content, $context, $tplName, &$object) 
   // Calculate the replacement string
   $replacement = '';
   foreach ($links as $link) {
-    $replacement .= "<a href='$link[path]' title='$link[title]'><img src=$link[icon] alt=$link[title]></a>";
+    $replacement .= "<a href='$link[path]' title='$link[title]'><i class='crm-i fa-$link[icon]'></i></a>";
   }
+
+watchdog('callinks', $replacement);
 
   // Perform the replacement in the page
   $anchor = '<div class="action-link section iCal_links-section">';
   $closed = '<\\/div>'; // escape \ because of the regexp
   $content = preg_replace($anchor.'(.*)'.$closed, $anchor.$replacement.$closed, $content);
 }
+
