@@ -56,6 +56,6 @@ function callinks_civicrm_alterContent(&$content, $context, $tplName, &$object) 
   $anchor = 'iCal_links-section">';    // <div class="action-link section iCal_links-section">
   $closed = '<\\/div>';                // </div>, but / is special char for regexp so escaped
   $pattern = '/' . $anchor . '.*?' . $closed . '/ms';  // ?: ungreedy, m: multiline, s: . includes newline chars
-  $replacement = $anchor . $links_html . str_replace($closed, '\\', '');
+  $replacement = $anchor . $links_html . str_replace('\\', '', $closed);
   $content = preg_replace($pattern, $replacement, $content);
 }
