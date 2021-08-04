@@ -94,6 +94,7 @@ function civicrm_add_to_calendar_format_gcalendar_dates($event) {
 function civicrm_add_to_calendar_format_gcalendar_details($event) {
   $output = '';
 
+  /* Drupal-specific functions ...
   if (!empty($event['description']) && TRUE) { // variable_get('civicrm_add_to_calendar_gcalendar_desc_enabled', TRUE)
     $format_id = variable_get('civicrm_add_to_calendar_gcalendar_desc_filter_format', 'civicrm_add_to_calendar_gcalendar');
     $output = check_markup($event['description'] . '<br>', $format_id);
@@ -108,6 +109,9 @@ function civicrm_add_to_calendar_format_gcalendar_details($event) {
       ]),
     ]);
   }
+  */
+
+  $output = $event['description'];
 
   return $output;
 }
