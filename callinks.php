@@ -1,5 +1,7 @@
 <?php
 
+if(!function_exists('t')) { function t($s) { return $s; }}
+
 /**
  * Implements hook_civicrm_alterContent().
  */
@@ -30,9 +32,7 @@ function callinks_civicrm_alterContent(&$content, $context, $tplName, &$object) 
   $links['ical'] = [
     'title' => t('Add to desktop calendar'),
     'icon' => 'calendar-plus-o',
-    'path' => url('civicrm/event/ical', [
-      'query' => ['reset' => 1, 'id' => $event_id],
-    ]),
+    'path' => CRM_Utils_System::url('civicrm/event/ical', ['reset' => 1, 'id' => $event_id]),
   ];
 
   // Google Calendar link

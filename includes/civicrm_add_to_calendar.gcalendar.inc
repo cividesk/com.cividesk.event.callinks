@@ -38,17 +38,14 @@ function civicrm_add_to_calendar_build_gcalendar_url($event_id) {
     'dates' => $dates,
     'details' => civicrm_add_to_calendar_format_gcalendar_details($event),
     'sprop' => 'website:' . $_SERVER['HTTP_HOST'],
-    'website' => url(current_path(), [
-      'absolute' => TRUE,
-      'query' => ['id' => $event_id, 'reset' => 1],
-    ]),
+    'website' => CRM_Utils_System::url('civicrm/event/info', ['id' => $event_id, 'reset' => 1], TRUE),
   ];
 
   if ($location = civicrm_add_to_calendar_format_gcalendar_location($event)) {
     $args['location'] = $location;
   }
 
-  return url(CIVICRM_GCALENDAR_BASE_PATH, ['query' => $args]);
+  return CIVICRM_GCALENDAR_BASE_PATH .'?' . http_build_query($args);
 }
 
 /**
@@ -71,7 +68,7 @@ function civicrm_add_to_calendar_format_gcalendar_dates($event) {
   $dates[] = empty($event['end_date']) ? $event['start_date'] : $event['end_date'];
 
   // Get site timezone.
-  $tz = variable_get('date_default_timezone', @date_default_timezone_get());
+  $tz = CRM_Core_Config::singleton()->userSystem->getTimeZoneString();
   foreach ($dates as $i => $date) {
     // Convert event date to GMT.
     $date = new DateTime($date, new DateTimeZone($tz));
@@ -103,10 +100,8 @@ function civicrm_add_to_calendar_format_gcalendar_details($event) {
   if (TRUE) { // variable_get('civicrm_add_to_calendar_gcalendar_civi_link_enabled', TRUE)
     // Appends a link to the Civi event at the bottom of the description.
     $output .= t('See event page: <a href="@url">@url</a>', [
-      '@url' => url('civicrm/event/info', [
-        'query' => ['id' => check_plain($event['id']), 'reset' => 1],
-        'absolute' => TRUE,
-      ]),
+      '@url' => CRM_Utils_System::url('civicrm/event/info', ['id' => $event['id'], 'reset' => 1], TRUE);
+      ),
     ]);
   }
   */
