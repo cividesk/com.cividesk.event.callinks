@@ -49,7 +49,9 @@ function callinks_civicrm_alterContent(&$content, $context, $tplName, &$object) 
   $links_html = '';
   foreach ($links as $link) {
     $css = "font-size: 32px; margin-right: 8px;";
-    $links_html .= "<a href='$link[path]' title='$link[title]'><i class='crm-i fa-$link[icon]' style='$css'></i></a>";
+    // Open external links in a new window/tab
+    $target = (substr($link[path], 0, 4) == 'http') ? "target='_blank'" : '';
+    $links_html .= "<a href='$link[path]' $target title='$link[title]'><i class='crm-i fa-$link[icon]' style='$css'></i></a>";
   }
 
   // Perform the replacement in the page - minimal anchor to be more robust against future changes
