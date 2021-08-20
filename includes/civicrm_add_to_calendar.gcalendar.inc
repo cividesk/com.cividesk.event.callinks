@@ -99,9 +99,9 @@ function civicrm_add_to_calendar_format_gcalendar_details($event) {
 
   if (TRUE) { // variable_get('civicrm_add_to_calendar_gcalendar_civi_link_enabled', TRUE)
     // Appends a link to the Civi event at the bottom of the description.
-    $output .= t('See event page: <a href="@url">@url</a>', [
-      '@url' => CRM_Utils_System::url('civicrm/event/info', ['id' => $event['id'], 'reset' => 1], TRUE);
-      ),
+    $output .= ts('See event page: <a href="@url">@url</a>', [
+      'domain' => CALLINKS_NAME,
+      '@url' => CRM_Utils_System::url('civicrm/event/info', ['id' => $event['id'], 'reset' => 1], TRUE),
     ]);
   }
   */

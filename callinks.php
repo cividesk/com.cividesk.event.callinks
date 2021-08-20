@@ -1,13 +1,13 @@
 <?php
 
-if(!function_exists('t')) { function t($s) { return $s; }}
+define('CALLINKS_NAME', 'com.cividesk.event.callinks');
 
 /**
  * Implements hook_civicrm_alterContent().
  */
 function callinks_civicrm_alterContent(&$content, $context, $tplName, &$object) {
 
-  // Determine event_id property based on the page displayed 
+  // Determine event_id property based on the page displayed
   switch ($tplName) {
     case 'CRM/Event/Page/EventInfo.tpl':
       $key = '_id';
@@ -30,7 +30,7 @@ function callinks_civicrm_alterContent(&$content, $context, $tplName, &$object) 
 
   // iCal link (native CiviCRM)
   $links['ical'] = [
-    'title' => t('Add to desktop calendar'),
+    'title' => ts('Add to desktop calendar', ['domain' => CALLINKS_NAME]),
     'icon' => 'calendar-plus-o',
     'path' => CRM_Utils_System::url('civicrm/event/ical', ['reset' => 1, 'id' => $event_id]),
   ];
@@ -39,7 +39,7 @@ function callinks_civicrm_alterContent(&$content, $context, $tplName, &$object) 
   require_once('includes/civicrm_add_to_calendar.gcalendar.inc');
   if ($path = civicrm_add_to_calendar_build_gcalendar_url($event_id)) {
     $links['gcalendar'] = [
-      'title' => t('Add to Google calendar'),
+      'title' => ts('Add to Google calendar', ['domain' => CALLINKS_NAME]),
       'icon' => 'google-plus-square',
       'path' => $path,
     ];
