@@ -2,6 +2,49 @@
 
 define('CALLINKS_NAME', 'com.cividesk.event.callinks');
 
+function _callinks_links($event_id) {
+  $links = [];
+
+  // iCal link (native CiviCRM)
+  $links['ical'] = [
+    'title' => ts('Add to desktop calendar', ['domain' => CALLINKS_NAME]),
+    'icon' => 'calendar-plus-o',
+    'path' => CRM_Utils_System::url('civicrm/event/ical', ['reset' => 1, 'id' => $event_id]),
+  ];
+
+  // Google Calendar link
+  require_once('includes/civicrm_add_to_calendar.gcalendar.inc');
+  if ($path = civicrm_add_to_calendar_build_gcalendar_url($event_id)) {
+    $links['gcalendar'] = [
+      'title' => ts('Add to Google calendar', ['domain' => CALLINKS_NAME]),
+      'icon' => 'google-plus-square',
+      'path' => $path,
+    ];
+  }
+
+  return $links;
+}
+
+function callinks_civicrm_alterMailParams(&$params, $context = NULL) {
+  if ($params['groupName'] == 'msg_tpl_workflow_event' && $params['valueName'] == 'event_online_receipt') {
+    $event_id = $params['tplParams']['event']['id'];
+    if ( $event_id == 2110) {
+    $extensionURL = CRM_Core_Config::singleton()->extensionsURL;
+    $links = _callinks_links($event_id);
+
+    // Calculate the replacement string
+    $links_html = '';
+    foreach ($links as $key  => $link) {
+      if ($key == 'gcalendar') {
+        $links_html .= "<a href='$link[path]' $target ";
+      }
+      $links_html .= " title='$link[title]'><img src='$extensionURL/common/com.cividesk.event.callinks/img/$link[icon].png'/></a> ";
+    }
+
+    $params['html'] = str_replace('>Download iCalendar File</a>', $links_html, $params['html']);
+  }
+}}
+
 /**
  * Implements hook_civicrm_alterContent().
  */
@@ -23,27 +66,7 @@ function callinks_civicrm_alterContent(&$content, $context, $tplName, &$object) 
   if (empty($object->{$key}) || strpos($content, 'iCal_links-section') === FALSE) {
     return;
   }
-
-  // Initialize variables
-  $event_id = $object->{$key};
-  $links = [];
-
-  // iCal link (native CiviCRM)
-  $links['ical'] = [
-    'title' => ts('Add to desktop calendar', ['domain' => CALLINKS_NAME]),
-    'icon' => 'calendar-plus-o',
-    'path' => CRM_Utils_System::url('civicrm/event/ical', ['reset' => 1, 'id' => $event_id]),
-  ];
-
-  // Google Calendar link
-  require_once('includes/civicrm_add_to_calendar.gcalendar.inc');
-  if ($path = civicrm_add_to_calendar_build_gcalendar_url($event_id)) {
-    $links['gcalendar'] = [
-      'title' => ts('Add to Google calendar', ['domain' => CALLINKS_NAME]),
-      'icon' => 'google-plus-square',
-      'path' => $path,
-    ];
-  }
+  $links = _callinks_links($object->{$key});
 
   // Calculate the replacement string
   $links_html = '';
