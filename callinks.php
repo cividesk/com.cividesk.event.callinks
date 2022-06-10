@@ -28,7 +28,6 @@ function _callinks_links($event_id) {
 function callinks_civicrm_alterMailParams(&$params, $context = NULL) {
   if ($params['groupName'] == 'msg_tpl_workflow_event' && $params['valueName'] == 'event_online_receipt') {
     $event_id = $params['tplParams']['event']['id'];
-    if ( $event_id == 2110) {
     $extensionURL = CRM_Core_Config::singleton()->extensionsURL;
     $links = _callinks_links($event_id);
 
@@ -43,7 +42,7 @@ function callinks_civicrm_alterMailParams(&$params, $context = NULL) {
 
     $params['html'] = str_replace('>Download iCalendar File</a>', $links_html, $params['html']);
   }
-}}
+}
 
 /**
  * Implements hook_civicrm_alterContent().
