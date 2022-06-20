@@ -106,7 +106,7 @@ function civicrm_add_to_calendar_format_gcalendar_details($event) {
   }
   */
 
-  $output = $event['description'];
+  $output = strip_tags($event['description'], '<b><a><u><strong>');
 
   return $output;
 }
