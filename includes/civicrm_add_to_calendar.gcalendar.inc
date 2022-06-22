@@ -106,8 +106,7 @@ function civicrm_add_to_calendar_format_gcalendar_details($event) {
   }
   */
 
-  $output = strip_tags($event['description'], '<b><a><u><strong>');
-
+  $output = $event['confirm_email_text'] ?? strip_tags($event['description'], '<b><a><u><strong>');
   return $output;
 }
 
