@@ -68,7 +68,14 @@ function civicrm_add_to_calendar_format_gcalendar_dates($event) {
   $dates[] = empty($event['end_date']) ? $event['start_date'] : $event['end_date'];
 
   // Get site timezone.
-  $tz = CRM_Core_Config::singleton()->userSystem->getTimeZoneString();
+  if (!empty($event['timezone'])) {
+    $timezone = civicrm_tz_lookup();
+    $tz = $timezone[$event['timezone']];
+  }
+  if (!$tz) {
+    $tz =  CRM_Core_Config::singleton()->userSystem->getTimeZoneString();
+  }
+
   foreach ($dates as $i => $date) {
     // Convert event date to GMT.
     $date = new DateTime($date, new DateTimeZone($tz));
@@ -77,6 +84,17 @@ function civicrm_add_to_calendar_format_gcalendar_dates($event) {
   }
 
   return implode('/', $dates);
+}
+
+function civicrm_tz_lookup() {
+  $tz = [
+    'GMT-10:00' => 'Pacific/Honolulu',
+    'GMT-05:00' => 'America/New_York',
+    'GMT-06:00' => 'America/Chicago',
+    'GMT-07:00' => 'America/Denver',
+    'GMT-08:00' => 'America/Los_Angeles',
+  ];
+  return $tz;
 }
 
 /**
