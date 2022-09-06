@@ -41,7 +41,7 @@ function civicrm_add_to_calendar_build_gcalendar_url($event_id) {
     'website' => CRM_Utils_System::url('civicrm/event/info', ['id' => $event_id, 'reset' => 1], TRUE),
   ];
 
-  if ($location = civicrm_add_to_calendar_format_gcalendar_location($event)) {
+  if (CRM_Utils_Array::value('loc_block_id', $event) && $location = civicrm_add_to_calendar_format_gcalendar_location($event)) {
     $args['location'] = $location;
   }
 
