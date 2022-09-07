@@ -25,6 +25,25 @@ function _callinks_links($event_id) {
   return $links;
 }
 
+function callinks_civicrm_calendar(&$info, &$timezone) {
+  require_once('includes/civicrm_add_to_calendar.gcalendar.inc');
+  foreach ($info as $id => $event) {
+    $result = civicrm_api3('Event', 'get', [
+      'id' => $event['event_id'],
+      'sequential' => 1,
+    ]);
+    $confirm = $result['values'][0]['confirm_email_text'];
+    if ($confirm) {
+      $info[$id]['description'] = $confirm;
+    }
+
+    if ($result['values'][0]['timezone']) {
+      $tz = civicrm_tz_lookup();
+      $timezone = $tz[$result['values'][0]['timezone']];
+    }
+  }
+}
+
 function callinks_civicrm_alterMailParams(&$params, $context = NULL) {
   if ($params['groupName'] == 'msg_tpl_workflow_event' && $params['valueName'] == 'event_online_receipt') {
     $event_id = $params['tplParams']['event']['id'];
