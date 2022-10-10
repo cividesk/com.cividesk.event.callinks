@@ -67,6 +67,7 @@ function civicrm_add_to_calendar_format_gcalendar_dates($event) {
   // If end date is not available, set start date as default.
   $dates[] = empty($event['end_date']) ? $event['start_date'] : $event['end_date'];
 
+  $tz = '';
   // Get site timezone.
   if (!empty($event['timezone'])) {
     $timezone = civicrm_tz_lookup();
