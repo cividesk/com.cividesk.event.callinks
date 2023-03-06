@@ -68,7 +68,9 @@ function callinks_civicrm_alterMailParams(&$params, $context = NULL) {
       $links_html .= " title='$link[title]'><img src='$extensionURL/common/com.cividesk.event.callinks/img/$link[icon].png'/></a> ";
     }
 
-    $params['html'] = str_replace('>Download iCalendar File</a>', $links_html, $params['html']);
+    //https://projects.cividesk.com/projects/3/tasks/5303
+    //handle translation issue (email icons for calendars)
+    $params['html'] = str_replace('>' . ts('Download iCalendar File') . '</a>', $links_html, $params['html']);
   }
 }
 
