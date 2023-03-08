@@ -54,8 +54,14 @@ function callinks_civicrm_calendar(&$info, &$timezone) {
  * Implementation of hook_civicrm_alterMailParams
  */
 function callinks_civicrm_alterMailParams(&$params, $context = NULL) {
-  if ($params['groupName'] == 'msg_tpl_workflow_event' && $params['valueName'] == 'event_online_receipt') {
-    $event_id = $params['tplParams']['event']['id'];
+  if ($params['groupName'] == 'msg_tpl_workflow_event' && in_array($params['valueName'], ['event_online_receipt', 'event_offline_receipt'])) {
+    if ($params['valueName'] == 'event_online_receipt') {
+      $event_id = $params['tplParams']['event']['id'];
+    }
+    else {
+      $event_id = $params['tplParams']['event_id'];
+    }
+
     $extensionURL = CRM_Core_Config::singleton()->extensionsURL;
     $links = _callinks_links($event_id);
 
