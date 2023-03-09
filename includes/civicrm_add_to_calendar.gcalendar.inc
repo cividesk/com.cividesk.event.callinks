@@ -42,7 +42,8 @@ function civicrm_add_to_calendar_build_gcalendar_url($event_id) {
   ];
 
   if (CRM_Utils_Array::value('loc_block_id', $event) && $location = civicrm_add_to_calendar_format_gcalendar_location($event)) {
-    $args['location'] = $location;
+    //https://projects.cividesk.com/projects/29/tasks/5291
+    $args['location'] = html_entity_decode($location, ENT_QUOTES, 'UTF-8');
   }
 
   return CIVICRM_GCALENDAR_BASE_PATH .'?' . http_build_query($args);
