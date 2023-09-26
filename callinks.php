@@ -17,7 +17,7 @@ function _callinks_links($event_id) {
   if ($path = civicrm_add_to_calendar_build_gcalendar_url($event_id)) {
     $links['gcalendar'] = [
       'title' => ts('Add to Google calendar', ['domain' => CALLINKS_NAME]),
-      'icon' => 'google-plus-square',
+      'icon' => 'google',
       'path' => $path,
     ];
   }
@@ -107,12 +107,17 @@ function callinks_civicrm_alterContent(&$content, $context, $tplName, &$object) 
   // Calculate the replacement string
   $links_html = '';
   foreach ($links as $link) {
-    if (isset($link['path'])) {
-      $css = "font-size: 32px; margin-right: 8px;";
+    $target = (substr($link['path'], 0, 4) == 'http') ? "target='_blank'" : '';
+    $links_html .= "<a href='$link[path]' $target title='$link[title]' style='border-bottom: none;'>";
+    // display link as a Font Awesome icon
+    if (isset($link['icon'])) {
+      $css = "font-size: 32px;";
       // Open external links in a new window/tab
-      $target = (substr($link['path'], 0, 4) == 'http') ? "target='_blank'" : '';
-      $links_html .= "<a href='$link[path]' $target title='$link[title]'><i class='crm-i fa-$link[icon]' style='$css'></i></a>";
+      $links_html .= "<i class='crm-i fa-$link[icon]' style='$css'></i>";
     }
+    // TODO: display links as images from the img/ folder
+    // else if (isset($links['image'])) {
+    $links_html .= '</a>&nbsp;&nbsp;';
   }
 
   // Perform the replacement in the page - minimal anchor to be more robust against future changes
