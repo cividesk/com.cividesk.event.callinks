@@ -17,7 +17,7 @@ function _callinks_links($event_id) {
   if ($path = civicrm_add_to_calendar_build_gcalendar_url($event_id)) {
     $links['gcalendar'] = [
       'title' => ts('Add to Google calendar', ['domain' => CALLINKS_NAME]),
-      'icon' => 'google',
+      'icon' => 'google-calendar',
       'path' => $path,
     ];
   }
@@ -70,7 +70,6 @@ function callinks_civicrm_alterMailParams(&$params, $context = NULL) {
     foreach ($links as $key  => $link) {
       if ($key == 'gcalendar') {
         $links_html .= "<a href='$link[path]' $target ";
-        $link['icon'] = 'google-calendar';
       }
       $links_html .= " title='$link[title]'><img src='$extensionURL/common/com.cividesk.event.callinks/img/$link[icon].png'/></a> ";
     }
@@ -85,7 +84,7 @@ function callinks_civicrm_alterMailParams(&$params, $context = NULL) {
  * Implements hook_civicrm_alterContent().
  */
 function callinks_civicrm_alterContent(&$content, $context, $tplName, &$object) {
-
+  $extensionURL = CRM_Core_Config::singleton()->extensionsURL;
   // Determine event_id property based on the page displayed
   switch ($tplName) {
     case 'CRM/Event/Page/EventInfo.tpl':
@@ -112,9 +111,9 @@ function callinks_civicrm_alterContent(&$content, $context, $tplName, &$object) 
     $links_html .= "<a href='$link[path]' $target title='$link[title]' style='border-bottom: none;'>";
     // display link as a Font Awesome icon
     if (isset($link['icon'])) {
-      $css = "font-size: 32px;";
+      $css = "float: left;";
       // Open external links in a new window/tab
-      $links_html .= "<i class='crm-i fa-$link[icon]' style='$css'></i>";
+      $links_html .= "<img style='$css' src='$extensionURL/common/com.cividesk.event.callinks/img/$link[icon].png'/>";
     }
     // TODO: display links as images from the img/ folder
     // else if (isset($links['image'])) {
