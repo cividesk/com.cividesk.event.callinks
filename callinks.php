@@ -70,6 +70,7 @@ function callinks_civicrm_alterMailParams(&$params, $context = NULL) {
     foreach ($links as $key  => $link) {
       if ($key == 'gcalendar') {
         $links_html .= "<a href='$link[path]' $target ";
+        $link['icon'] = 'google-calendar';
       }
       $links_html .= " title='$link[title]'><img src='$extensionURL/common/com.cividesk.event.callinks/img/$link[icon].png'/></a> ";
     }
